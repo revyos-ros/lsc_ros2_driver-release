@@ -1,0 +1,7 @@
+ros-humble-lsc-ros2-driver (1.0.0-2jammy) jammy; urgency=high
+
+  * Initial release
+
+ -- Autonics-lidar <lidar-ros@autonics.com>  Tue, 13 Dec 2022 15:00:00 -0000
+
+

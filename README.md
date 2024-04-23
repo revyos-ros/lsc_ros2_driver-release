@@ -1,3 +1,26 @@
+## lsc_ros2_driver (humble) - 1.0.2-1
+
+The packages in the `lsc_ros2_driver` repository were released into the `humble` distro by running `/usr/bin/bloom-release --ros-distro humble --track humble lsc_ros2_driver --edit` on `Tue, 23 Apr 2024 00:16:42 -0000`
+
+The `lsc_ros2_driver` package was released.
+
+Version of package(s) in repository `lsc_ros2_driver`:
+
+- upstream repository: https://github.com/AutonicsLiDAR/lsc_ros2_driver.git
+- release repository: https://github.com/AutonicsLiDAR-release/lsc_ros2_driver-release.git
+- rosdistro version: `1.0.0-2`
+- old version: `1.0.0-2`
+- new version: `1.0.2-1`
+
+Versions of tools used:
+
+- bloom version: `0.12.0`
+- catkin_pkg version: `1.0.0`
+- rosdep version: `0.22.1`
+- rosdistro version: `0.9.0`
+- vcstools version: `0.1.42`
+
+
 ## lsc_ros2_driver (humble) - 1.0.0-2
 
 The packages in the `lsc_ros2_driver` repository were released into the `humble` distro by running `/usr/bin/bloom-release --new-track --rosdistro humble --track humble lsc_ros2_driver` on `Fri, 16 Dec 2022 00:53:30 -0000`

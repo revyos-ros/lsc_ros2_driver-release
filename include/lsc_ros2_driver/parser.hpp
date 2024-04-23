@@ -42,9 +42,10 @@
 
 #define PI  3.14159265358979323846
 #define DEG2RAD PI / 180
+#define RAD2DEG 180 / PI
 
-#define NUM_OF_CMD_TYPE 4
-#define NUM_OF_CMD 7
+#define NUM_OF_CMD_TYPE 7
+#define NUM_OF_CMD 8
 
 #define NUMBER_OF_PARAM 13
 
@@ -56,12 +57,15 @@ enum CmdListNum
     SENSOR_START,
     SENSOR_STOP,
     SCAN_DATA,
-    FIRST_CONNECT_DUMMY_SEND
+    FIRST_CONNECT_DUMMY_SEND,
+    SCAN_DATA_CONFIG
 };
 
 
 struct ScanInfo
 {
+    int32_t angle_start;
+    int32_t angle_end;
     uint16_t fw_ver;
     std::string model_name;
 };
@@ -80,28 +84,92 @@ struct ScanMea
     std::vector<float> rssi;
 };
 
+struct ScanDataConfig
+{
+    int32_t angle_start;
+    int32_t angle_end;
+    uint8_t rssi_activate;
+    uint16_t scan_interval;
+    uint8_t fieldset_output_activate;
+};
+
 struct Lsc_t
 {
     ScanMea scan_mea;
     ScanInfo scan_info;
+    ScanDataConfig scan_data_config;
 };
+
+
 
 
 class Parser
 {
   public:
-    virtual void parsingMsg(std::vector<unsigned char> raw_msg, std::shared_ptr<Lsc_t> parsed_data) = 0;
+    virtual int parsingMsg(std::vector<unsigned char> raw_msg, std::shared_ptr<Lsc_t> parsed_data) = 0;
     virtual std::string getResponse() = 0;
 };
 
 class AsciiParser : public Parser
 {
   public:
-    void parsingMsg(std::vector<unsigned char> raw_msg, std::shared_ptr<Lsc_t> parsed_data);
+    AsciiParser();
+    ~AsciiParser();
+    int parsingMsg(std::vector<unsigned char> raw_msg, std::shared_ptr<Lsc_t> parsed_data);
     std::string getResponse();
 
   private:
     std::string command_;
+    
+    std::vector<unsigned char> raw_msg; 
+    std::shared_ptr<Lsc_t> parsed_data;
+};
+
+
+class UdpParser
+{
+  public:
+    UdpParser();
+    ~UdpParser();
+    int parsingMsg(std::vector<unsigned char> raw_msg);
+    std::string getResponse();
+    
+    struct UdpInfo
+    {
+        unsigned char IpAddr[4];
+        unsigned char BroadcastVersion[4];
+        unsigned char HWVersion[4];
+        unsigned char SWVersion[4];
+        unsigned char FPGAVersion[4];
+        unsigned char SubnetMask[4];
+        unsigned char GateWay[4];
+        unsigned char Port[4];
+        unsigned char MAC[8];
+        unsigned char ModelName[32];
+        unsigned char InUse;
+    };
+
+    struct UdpSet
+    {
+        unsigned char MAC[8];
+        unsigned char OldIp[4];
+        unsigned char NewIp[4];
+        unsigned char SubnetMask[4];
+        unsigned char GateWay[4];
+        unsigned char Port[4];
+    };
+
+    unsigned char makeCheckSum(unsigned char* pData, uint16_t nLength);
+    bool VerifyCheckSum(unsigned char* pData, uint16_t nLength);
+    int makeUdpCmd(int cmd, unsigned char* sendbuf, std::shared_ptr<UdpSet> info);
+
+    std::shared_ptr<UdpInfo> NetworkInfo;
+    std::shared_ptr<UdpSet> NetworkChange;
+    std::vector<unsigned char> raw_msg; 
+    std::string recv_addr;
+
+  private:
+    std::string command_;    
 };
 
 

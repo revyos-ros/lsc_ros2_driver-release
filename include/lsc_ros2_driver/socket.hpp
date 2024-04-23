@@ -107,7 +107,6 @@ class tcpComm : public Communication
 
     sockaddr_in m_server_addr_;
     std::thread thread_read_;
-    std::string addr_st_;
     uint16_t port_num_;
 
 #ifdef _MSC_VER
@@ -119,6 +118,59 @@ class tcpComm : public Communication
     bool m_connected_;
     bool rcv_timeout_;
     bool rcv_error_;
+};
+
+
+class udpComm : public Communication
+{
+  public:
+    udpComm();
+    ~udpComm();
+
+    int CommConnect(std::string addr, uint16_t port);
+    int CommRead(unsigned char* buffer, int buf_size);
+    int CommWrite(unsigned char* buffer, int buf_size);
+    void CommDisconnect();
+
+    bool IsConnected(void);
+
+
+    friend void* udpReadCallback(void* arg);
+#ifdef _MSC_VER
+    SOCKET getClientSocket(void);
+#else
+    int getClientSocket(void);
+#endif
+
+    bool getthreadRunning(void);
+    bool getRcvTimeout(void);
+    bool getRcvError(void);
+
+    void setConnected(bool flag);
+    void setThreadRunning(bool flag);
+    void setRcvTimeout(bool flag);
+    void setRcvError(bool flag);
+
+    void pushAddr(std::string recvaddr);
+    std::string popAddr(void);
+
+  private:
+    sockaddr_in m_server_addr_;
+    std::thread thread_read_;
+    uint16_t port_num_;
+
+#ifdef _MSC_VER
+    SOCKET m_client_sock_;
+#else
+    int m_client_sock_;
+#endif
+    bool thread_running_;
+    bool m_connected_;
+    bool rcv_timeout_;
+    bool rcv_error_;
+
+    char recv_ipaddr[30];
+    std::queue<std::string> queue_addr_;
 };
 
 #endif

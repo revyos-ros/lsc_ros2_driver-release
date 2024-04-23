@@ -90,6 +90,13 @@ class Autolidar : public rclcpp::Node
       double max_freq_;
     #endif
 
+    int login(std::string password);
+    std::string searchMatchedAddr(std::string std_addr, std::vector<std::string> ip_list);
+    std::string searchClientip(std::string baseAddr);
+    int addrChange();
+    int setScanAngle();
+    void lsc_init();
+
     std::shared_ptr<Communication> comm_;
     std::shared_ptr<Parser> parser_;
     std::shared_ptr<sensor_msgs::msg::LaserScan> scan_msg_;
@@ -101,14 +108,23 @@ class Autolidar : public rclcpp::Node
     rclcpp::Publisher<sensor_msgs::msg::LaserScan>::SharedPtr laser_topic_publisher_;
     rclcpp::TimerBase::SharedPtr pub_timer_;
 
-    std::string ip_addr, frame_id, pub_topic;
+    std::string ip_addr, frame_id, pub_topic, password, prev_addr, new_addr;
     uint16_t port_number;
     int diagnostics_windows_time;
-    float angle_min, angle_max;
+    float angle_min, angle_max, angle_offset;
     double range_min, range_max, diagnostics_tolerance;
-    bool  intensities;
+    bool  intensities, ip_change;
 
     bool diagnostic_param_setting;
+
+
+    enum IPCHANGE_STAT{
+        NONE = 0,
+        RQ_INFO,// cmd send
+        GET_INFO,// recv info
+        INFO_CHANGE,// change cmd send
+        GET_RESP// recv ack
+    };
 };
 
 

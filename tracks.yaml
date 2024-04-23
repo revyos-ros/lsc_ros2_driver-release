@@ -50,4 +50,4 @@ tracks:
     ros_distro: humble
     vcs_type: git
     vcs_uri: https://github.com/AutonicsLiDAR/lsc_ros2_driver.git
-    version: 1.0.0
+    version: 1.0.2

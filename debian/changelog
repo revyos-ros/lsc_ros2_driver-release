@@ -1,0 +1,15 @@
+ros-humble-lsc-ros2-driver (1.0.2-1bookworm) bookworm; urgency=high
+
+  * add ip change parameter
+  * add angle_min, angle_max, angle_offset parameter
+  * add urdf file
+
+ -- Autonics-lidar <lidar-ros@autonics.com>  Thu, 11 Apr 2024 16:00:00 -0000
+
+ros-humble-lsc-ros2-driver (1.0.0-1bookworm) bookworm; urgency=high
+
+  * Initial release
+
+ -- Autonics-lidar <lidar-ros@autonics.com>  Tue, 13 Dec 2022 16:00:00 -0000
+
+
